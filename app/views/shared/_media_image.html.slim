@@ -1,6 +1,6 @@
 ruby:
   medium = local_assigns[:medium]
 
-.media-image
-  - unless medium.image_url(:lg).nil?
+- if medium.image_url
+  .media-image
     = image_tag medium.image_url(:lg)
