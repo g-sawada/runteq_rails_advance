@@ -34,7 +34,7 @@ class Admin::ArticlesController < ApplicationController
   def update
     authorize(@article)
 
-    @article.assign_attributes(article_params) #adjust_stateでstate値を設定するために，保存はまだしない
+    @article.assign_attributes(article_params) # adjust_stateでstate値を設定するために，保存はまだしない
     @article.adjust_state
 
     if @article.save
