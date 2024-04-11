@@ -14,6 +14,9 @@ every 1.minutes do
   rake 'example:task'
 end
 
+every :hour do
+  rake 'article_state:update_article_state'
+end
 
 # Example:
 #
