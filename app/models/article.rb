@@ -104,4 +104,12 @@ class Article < ApplicationRecord
                   end
   end
 
+  def message_on_published
+      if published?
+        '記事を公開しました'
+      else publish_wait?
+        '記事を公開待ちにしました'
+      end
+  end
+
 end
