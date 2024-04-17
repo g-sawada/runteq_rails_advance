@@ -18,6 +18,6 @@ class Embed < ApplicationRecord
   validates :identifier, length: { maximum: 200 }
 
   def extract_id_from_youtube_url
-    identifier.match(%r{/([^/?]+)\?})[1] if youtube?
+    identifier.split('/').last if youtube?
   end
 end
