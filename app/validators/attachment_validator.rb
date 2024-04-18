@@ -7,11 +7,32 @@ class AttachmentValidator < ActiveModel::EachValidator
     has_error = false
 
     if options[:maximum]
-      has_error = true unless validate_maximum(record, attribute, value)
+      if value.is_a?(ActiveStorage::Attached::Many) # has_many_attachedのmain_images用に条件分岐
+        # 画像が複数枚投稿された場合
+        value.each do |v|
+          unless validate_maximum(record, attribute, v)
+            has_error = true
+            break #一つでもエラーがあれば終了
+          end
+        end
+      else # is_a?(ActiveStorage::Attached::One)
+        # 画像が一枚投稿された場合
+        has_error = true unless validate_maximum(record, attribute, value)
+      end
     end
 
     if options[:content_type]
-      has_error = true unless validate_content_type(record, attribute, value)
+      if value.is_a?(ActiveStorage::Attached::Many) # has_many_attachedのmain_images用に条件分岐
+        value.each do |v|
+          unless validate_content_type(record, attribute, v)
+            has_error = true
+            break #一つでもエラーがあれば終了
+          end
+        end
+      else # is_a?(ActiveStorage::Attached::One)
+        # 画像が一枚投稿された場合
+        has_error = true unless validate_content_type(record, attribute, value)
+      end
     end
 
     record.send(attribute).purge if options[:purge] && has_error
