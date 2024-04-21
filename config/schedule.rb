@@ -10,12 +10,16 @@ set :environment, rails_env # cronを実行する環境変数をセット
 ENV.each { |k, v| env(k, v) } #環境変数をwheneverのジョブに引き継ぐのに必要らしい
 set :output, "#{Rails.root}/log/crontab.log" # cronのログ出力用ファイル
 
-every 1.minutes do
-  rake 'example:task'
-end
+# every 1.minutes do
+#   rake 'example:task'
+# end
 
 every :hour do
   rake 'article_state:update_article_state'
+end
+
+every 1.day, at: '9:00 am' do
+  rake 'article_summary:mail_article_summary'
 end
 
 # Example:
